@@ -87,9 +87,4 @@ public static class UIMethods
         Console.WriteLine();
         Console.WriteLine("It's a draw with AI player!");
     }
-    public static void PrintAIPlayerDraws()
-    {
-        Console.WriteLine();
-        Console.WriteLine("It's a draw with Human Player!");
-    }
 }
