@@ -2,54 +2,25 @@
 
 class Program
 {
+    const int FIRST_RANDOM_NUMBER = 0;
+    const int SECOND_RANDOM_NUMBER = 3;
+
     static void Main(string[] args)
     {
-        //created 3 x 3 grid
-        char[,] grid =
-        {
-            { ' ', ' ', ' ' },
-            { ' ', ' ', ' ' },
-            { ' ', ' ', ' ' }
-        };
+        char[,] grid = GridData.CreateGrid();
+        UIMethods.DisplayGrid(grid);
+        UIMethods.LineSeperator();
 
-       //display empty grid
-        for (int row = 0; row < 3; row++)
-        {
-            for (int column = 0; column < 3; column++)
-            {
-                Console.Write(grid[row, column]);
-
-                if (column < 2)
-                {
-                    Console.Write(" | ");
-                }
-            }
-
-            Console.WriteLine();
-
-            if (row < 2)
-            {
-                Console.WriteLine("---------");
-            }
-        }
-
-        Console.WriteLine();
-        Console.WriteLine();
-        
         bool gameOver = false;
         int moves = 0;
 
         while (!gameOver)
         {
-            
             // Ask Player to input symbol at required position
-            Console.Write("Enter row (0-2): ");
-            int playerRow = int.Parse(Console.ReadLine());
-
-            Console.Write("Enter column (0-2): ");
-            int playerColumn = int.Parse(Console.ReadLine());
-
+            int playerRow = UIMethods.GetPlayerRowInput();
+            int playerColumn = UIMethods.GetPlayerColumnInput();
             // Check if position is empty
+
             if (grid[playerRow, playerColumn] == ' ')
             {
                 grid[playerRow, playerColumn] = 'X';
@@ -61,67 +32,46 @@ class Program
                 continue;
             }
 
-            grid[playerRow, playerColumn] = 'X';
-
-            //display grid again after user has entered symbol
-            for (int row = 0; row < 3; row++)
+            GameActions.PlayerMakeMove(grid, playerRow, playerColumn, 'X');
+            UIMethods.DisplayGrid(grid);
+            var playerWon = GameActions.CheckPlayerWon(grid, playerRow, playerColumn, 'X');
+            if (playerWon)
             {
-                for (int column = 0; column < 3; column++)
-                {
-                    Console.Write(grid[row, column]);
+                UIMethods.PrintPlayerWins();
+                gameOver = true;
+                continue;
+            }
 
-                    if (column < 2)
-                    {
-                        Console.Write(" | ");
-                    }
-                }
-
-                Console.WriteLine();
-
-                if (row < 2)
-                {
-                    Console.WriteLine("---------");
-                }
+            if (GameActions.CheckPlayerDrawsWithAi(moves) == 9)
+            {
+                UIMethods.PrintPlayerDraws();
+                gameOver = true;
+                continue;
             }
 
             // AI turn
             Random random = new Random();
-            int aiRow = random.Next(0, 3);
-            int aiColumn = random.Next(0, 3);
-
+            int aiRow = random.Next(FIRST_RANDOM_NUMBER, SECOND_RANDOM_NUMBER);
+            int aiColumn = random.Next(FIRST_RANDOM_NUMBER, SECOND_RANDOM_NUMBER);
             do
             {
-                aiRow = random.Next(0, 3);
-                aiColumn = random.Next(0, 3);
+                aiRow = random.Next(FIRST_RANDOM_NUMBER, SECOND_RANDOM_NUMBER);
+                aiColumn = random.Next(FIRST_RANDOM_NUMBER, SECOND_RANDOM_NUMBER);
             } while (grid[aiRow, aiColumn] != ' ');
 
-            grid[aiRow, aiColumn] = 'O';
+            AIActions.AIMakeMove(grid, '0', aiRow, aiColumn);
+            moves++;
 
-            Console.WriteLine();
+            UIMethods.LineSeperator();
+            UIMethods.DisplayGrid(grid);
+            UIMethods.LineSeperator();
 
-            for (int row = 0; row < 3; row++)
+            var aiWon = GameActions.CheckAIPlayerWon(grid, aiRow, aiColumn, '0');
+            if (aiWon)
             {
-                for (int column = 0; column < 3; column++)
-                {
-                    Console.Write(grid[row, column]);
-
-                    if (column < 2)
-                    {
-                        Console.Write(" | ");
-                    }
-                }
-
-                Console.WriteLine();
-
-                if (row < 2)
-                {
-                    Console.WriteLine("---------");
-                }
+                UIMethods.PrintAIPlayerWins();
+                gameOver = true;
             }
-            
-            Console.WriteLine();
         }
-
     }
-
 }
