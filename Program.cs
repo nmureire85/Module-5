@@ -2,23 +2,21 @@
 
 class Program
 {
-    const int FIRST_RANDOM_NUMBER = 0;
-    const int SECOND_RANDOM_NUMBER = 3;
-
+    
     static void Main(string[] args)
     {
-        char[,] grid = GridData.CreateGrid();
+        char[,] grid = GameActions.CreateGrid(5);
         UIMethods.DisplayGrid(grid);
-        UIMethods.LineSeperator();
+        UIMethods.ApplyLineSeperator();
 
         bool gameOver = false;
         int moves = 0;
-
+        Random random = new Random();   
         while (!gameOver)
         {
             // Ask Player to input symbol at required position
-            int playerRow = UIMethods.GetPlayerRowInput();
-            int playerColumn = UIMethods.GetPlayerColumnInput();
+            int playerRow = UIMethods.GetPlayerRowInput(5);
+            int playerColumn = UIMethods.GetPlayerColumnInput(5);
             // Check if position is empty
 
             if (grid[playerRow, playerColumn] == ' ')
@@ -34,7 +32,7 @@ class Program
 
             GameActions.PlayerMakeMove(grid, playerRow, playerColumn, 'X');
             UIMethods.DisplayGrid(grid);
-            var playerWon = GameActions.CheckPlayerWon(grid, playerRow, playerColumn, 'X');
+            var playerWon = GameActions.CheckPlayerWon(grid,  'X');
             if (playerWon)
             {
                 UIMethods.PrintPlayerWins();
@@ -42,7 +40,9 @@ class Program
                 continue;
             }
 
-            if (GameActions.CheckPlayerDrawsWithAi(moves) == 9)
+            int gridSize = grid.GetLength(0);
+            int totalCells = gridSize * gridSize;
+            if (moves == totalCells)
             {
                 UIMethods.PrintPlayerDraws();
                 gameOver = true;
@@ -50,23 +50,24 @@ class Program
             }
 
             // AI turn
-            Random random = new Random();
-            int aiRow = random.Next(FIRST_RANDOM_NUMBER, SECOND_RANDOM_NUMBER);
-            int aiColumn = random.Next(FIRST_RANDOM_NUMBER, SECOND_RANDOM_NUMBER);
+            int aiRow;
+            int aiColumn;
+
             do
             {
-                aiRow = random.Next(FIRST_RANDOM_NUMBER, SECOND_RANDOM_NUMBER);
-                aiColumn = random.Next(FIRST_RANDOM_NUMBER, SECOND_RANDOM_NUMBER);
-            } while (grid[aiRow, aiColumn] != ' ');
+                aiRow = random.Next(gridSize);
+                aiColumn = random.Next(gridSize);
+            }
+            while (grid[aiRow, aiColumn] != ' ');
 
             AIActions.AIMakeMove(grid, '0', aiRow, aiColumn);
             moves++;
 
-            UIMethods.LineSeperator();
+            UIMethods.ApplyLineSeperator();
             UIMethods.DisplayGrid(grid);
-            UIMethods.LineSeperator();
+            UIMethods.ApplyLineSeperator();
 
-            var aiWon = GameActions.CheckAIPlayerWon(grid, aiRow, aiColumn, '0');
+            var aiWon = GameActions.CheckAIPlayerWon(grid,  '0');
             if (aiWon)
             {
                 UIMethods.PrintAIPlayerWins();

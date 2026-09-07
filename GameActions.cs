@@ -4,50 +4,101 @@ namespace TicTacToe;
 
 public class GameActions
 {
+    
+    public static char[,] CreateGrid(int size)
+    {
+        char[,] grid = new char[size, size];
+
+        for (int row = 0; row < size; row++)
+        {
+            for (int column = 0; column < size; column++)
+            {
+                grid[row, column] = ' ';
+            }
+        }
+
+        return grid;
+    }
+    
     public static void PlayerMakeMove(char[,] grid, int playerRow, int playerColumn, char symbol)
     {
         grid[playerRow, playerColumn] = symbol;
     }
 
-    public static bool CheckPlayerWon(char[,] grid, int playerRow, int playerColumn, char playersymbol)
+    public static bool CheckPlayerWon(char[,] grid, char playerSymbol)
     {
-        bool playerWon = false;
+        int gridSize = grid.GetLength(0);
 
-        for (int row = 0; row < 3; row++)
+        // Check rows
+        for (int row = 0; row < gridSize; row++)
         {
-            if (grid[row, 0] == playersymbol &&
-                grid[row, 1] == playersymbol &&
-                grid[row, 2] == playersymbol)
+            bool rowWon = true;
+
+            for (int column = 0; column < gridSize; column++)
             {
-                playerWon = true;
+                if (grid[row, column] != playerSymbol)
+                {
+                    rowWon = false;
+                    break;
+                }
+            }
+
+            if (rowWon)
+            {
+                return true;
             }
         }
 
-        for (int column = 0; column < 3; column++)
+        // Check columns
+        for (int column = 0; column < gridSize; column++)
         {
-            if (grid[0, column] == playersymbol &&
-                grid[1, column] == playersymbol &&
-                grid[2, column] == playersymbol)
+            bool columnWon = true;
+
+            for (int row = 0; row < gridSize; row++)
             {
-                playerWon = true;
+                if (grid[row, column] != playerSymbol)
+                {
+                    columnWon = false;
+                    break;
+                }
+            }
+
+            if (columnWon)
+            {
+                return true;
             }
         }
 
-        if (grid[0, 0] == playersymbol &&
-            grid[1, 1] == playersymbol &&
-            grid[2, 2] == playersymbol)
+        // Check first diagonal
+        bool firstDiagonalWon = true;
+
+        for (int index = 0; index < gridSize; index++)
         {
-            playerWon = true;
+            if (grid[index, index] != playerSymbol)
+            {
+                firstDiagonalWon = false;
+                break;
+            }
         }
 
-        if (grid[0, 2] == playersymbol &&
-            grid[1, 1] == playersymbol &&
-            grid[2, 0] == playersymbol)
+        if (firstDiagonalWon)
         {
-            playerWon = true;
+            return true;
         }
 
-        return playerWon;
+        // Check second diagonal
+        bool secondDiagonalWon = true;
+
+        for (int index = 0; index < gridSize; index++)
+        {
+            if (grid[index, gridSize - 1 - index] != playerSymbol)
+            {
+                secondDiagonalWon = false;
+                break;
+            }
+        }
+
+        return secondDiagonalWon;
     }
 
     public static int CheckPlayerDrawsWithAi(int moves)
@@ -55,43 +106,86 @@ public class GameActions
         return moves;
     }
     
-    public static bool CheckAIPlayerWon(char[,] grid, int playerRow, int playerColumn, char aiSymbol)
+    
+    public static bool CheckAIPlayerWon(char[,] grid, char aiSymbol)
     {
+        int gridSize = grid.GetLength(0);
         bool aiWon = false;
-        for (int row = 0; row < 3; row++)
+
+        // Check rows
+        for (int row = 0; row < gridSize; row++)
         {
-            if (grid[row, 0] == aiSymbol &&
-                grid[row, 1] == aiSymbol &&
-                grid[row, 2] == aiSymbol)
+            bool rowWon = true;
+
+            for (int column = 0; column < gridSize; column++)
+            {
+                if (grid[row, column] != aiSymbol)
+                {
+                    rowWon = false;
+                    break;
+                }
+            }
+
+            if (rowWon)
             {
                 aiWon = true;
             }
         }
 
-        for (int column = 0; column < 3; column++)
+        // Check columns
+        for (int column = 0; column < gridSize; column++)
         {
-            if (grid[0, column] == aiSymbol &&
-                grid[1, column] == aiSymbol &&
-                grid[2, column] == aiSymbol)
+            bool columnWon = true;
+
+            for (int row = 0; row < gridSize; row++)
+            {
+                if (grid[row, column] != aiSymbol)
+                {
+                    columnWon = false;
+                    break;
+                }
+            }
+
+            if (columnWon)
             {
                 aiWon = true;
             }
         }
 
-        if (grid[0, 0] == aiSymbol &&
-            grid[1, 1] == aiSymbol &&
-            grid[2, 2] == aiSymbol)
+        // Check first diagonal
+        bool firstDiagonalWon = true;
+
+        for (int index = 0; index < gridSize; index++)
+        {
+            if (grid[index, index] != aiSymbol)
+            {
+                firstDiagonalWon = false;
+                break;
+            }
+        }
+
+        if (firstDiagonalWon)
         {
             aiWon = true;
         }
 
-        if (grid[0, 2] == aiSymbol &&
-            grid[1, 1] == aiSymbol &&
-            grid[2, 0] == aiSymbol)
+        // Check second diagonal
+        bool secondDiagonalWon = true;
+
+        for (int index = 0; index < gridSize; index++)
+        {
+            if (grid[index, gridSize - 1 - index] != aiSymbol)
+            {
+                secondDiagonalWon = false;
+                break;
+            }
+        }
+
+        if (secondDiagonalWon)
         {
             aiWon = true;
         }
-        
+
         return aiWon;
     }
 }

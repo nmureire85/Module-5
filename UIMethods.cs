@@ -5,13 +5,13 @@ public static class UIMethods
     
     public static void DisplayGrid(char[,] grid)
     {
-        for (int row = 0; row < 3; row++)
+        for (int row = 0; row < grid.GetLength(0); row++)
         {
-            for (int column = 0; column < 3; column++)
+            for (int column = 0; column < grid.GetLength(1); column++)
             {
                 Console.Write(grid[row, column]);
 
-                if (column < 2)
+                if (column < grid.GetLength(1) - 1)
                 {
                     Console.Write(" | ");
                 }
@@ -19,52 +19,52 @@ public static class UIMethods
 
             Console.WriteLine();
 
-            if (row < 2)
+            if (row < grid.GetLength(0) - 1)
             {
-                Console.WriteLine("---------");
+                Console.WriteLine("------------------");
             }
         }
     }
 
-    public static int GetPlayerRowInput()
+    public static int GetPlayerRowInput(int gridSize)
     {
         while (true)
         {
-            Console.Write("Enter row (0-2): ");
+            Console.Write($"Enter row (0-{gridSize - 1}): ");
             string input = Console.ReadLine();
 
             if (int.TryParse(input, out int playerRow))
             {
-                if (playerRow >= 0 && playerRow <= 2)
+                if (playerRow >= 0 && playerRow < gridSize)
                 {
                     return playerRow;
                 }
             }
 
-            Console.WriteLine("Please enter a number between 0 and 2.");
+            Console.WriteLine($"Please enter a number between 0 and {gridSize - 1}.");
         }
     }
 
-    public static int GetPlayerColumnInput()
+    public static int GetPlayerColumnInput(int gridSize)
     {
         while (true)
         {
-            Console.Write("Enter column (0-2): ");
+            Console.Write($"Enter column (0-{gridSize - 1}): ");
             string input = Console.ReadLine();
 
             if (int.TryParse(input, out int playerColumn))
             {
-                if (playerColumn >= 0 && playerColumn <= 2)
+                if (playerColumn >= 0 && playerColumn < gridSize)
                 {
                     return playerColumn;
                 }
             }
 
-            Console.WriteLine("Please enter a number between 0 and 2.");
+            Console.WriteLine($"Please enter a number between 0 and {gridSize - 1}.");
         }
     }
 
-    public static void LineSeperator()
+    public static void ApplyLineSeperator()
     {
         Console.WriteLine();
         Console.WriteLine();
