@@ -27,9 +27,35 @@ public class GameActions
 
     public static bool CheckPlayerWon(char[,] grid, char playerSymbol)
     {
+        if (CheckRows(grid, playerSymbol))
+        {
+            return true;
+        }
+
+        if (CheckColumns(grid, playerSymbol))
+        {
+            return true;
+        }
+
+        if (CheckFirstDiagonal(grid, playerSymbol))
+        {
+            return true;
+        }
+
+        if (CheckSecondDiagonal(grid, playerSymbol))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    
+    
+    public static bool CheckRows(char[,] grid, char playerSymbol)
+    {
         int gridSize = grid.GetLength(0);
 
-        // Check rows
         for (int row = 0; row < gridSize; row++)
         {
             bool rowWon = true;
@@ -49,7 +75,13 @@ public class GameActions
             }
         }
 
-        // Check columns
+        return false;
+    }
+    
+    public static bool CheckColumns(char[,] grid, char playerSymbol)
+    {
+        int gridSize = grid.GetLength(0);
+
         for (int column = 0; column < gridSize; column++)
         {
             bool columnWon = true;
@@ -69,123 +101,61 @@ public class GameActions
             }
         }
 
-        // Check first diagonal
-        bool firstDiagonalWon = true;
+        return false;
+    }
+    
+    public static bool CheckFirstDiagonal(char[,] grid, char playerSymbol)
+    {
+        int gridSize = grid.GetLength(0);
 
         for (int index = 0; index < gridSize; index++)
         {
             if (grid[index, index] != playerSymbol)
             {
-                firstDiagonalWon = false;
-                break;
+                return false;
             }
         }
 
-        if (firstDiagonalWon)
-        {
-            return true;
-        }
-
-        // Check second diagonal
-        bool secondDiagonalWon = true;
+        return true;
+    }
+    
+    public static bool CheckSecondDiagonal(char[,] grid, char playerSymbol)
+    {
+        int gridSize = grid.GetLength(0);
 
         for (int index = 0; index < gridSize; index++)
         {
             if (grid[index, gridSize - 1 - index] != playerSymbol)
             {
-                secondDiagonalWon = false;
-                break;
+                return false;
             }
         }
 
-        return secondDiagonalWon;
-    }
-
-    public static int CheckPlayerDrawsWithAi(int moves)
-    {
-        return moves;
+        return true;
     }
     
-    
-    public static bool CheckAIPlayerWon(char[,] grid, char aiSymbol)
+    public static bool CheckAiPlayerWon(char[,] grid, char aiSymbol)
     {
-        int gridSize = grid.GetLength(0);
-        bool aiWon = false;
-
-        // Check rows
-        for (int row = 0; row < gridSize; row++)
+        if (CheckRows(grid, aiSymbol))
         {
-            bool rowWon = true;
-
-            for (int column = 0; column < gridSize; column++)
-            {
-                if (grid[row, column] != aiSymbol)
-                {
-                    rowWon = false;
-                    break;
-                }
-            }
-
-            if (rowWon)
-            {
-                aiWon = true;
-            }
+            return true;
         }
 
-        // Check columns
-        for (int column = 0; column < gridSize; column++)
+        if (CheckColumns(grid, aiSymbol))
         {
-            bool columnWon = true;
-
-            for (int row = 0; row < gridSize; row++)
-            {
-                if (grid[row, column] != aiSymbol)
-                {
-                    columnWon = false;
-                    break;
-                }
-            }
-
-            if (columnWon)
-            {
-                aiWon = true;
-            }
+            return true;
         }
 
-        // Check first diagonal
-        bool firstDiagonalWon = true;
-
-        for (int index = 0; index < gridSize; index++)
+        if (CheckFirstDiagonal(grid, aiSymbol))
         {
-            if (grid[index, index] != aiSymbol)
-            {
-                firstDiagonalWon = false;
-                break;
-            }
+            return true;
         }
 
-        if (firstDiagonalWon)
+        if (CheckSecondDiagonal(grid, aiSymbol))
         {
-            aiWon = true;
+            return true;
         }
 
-        // Check second diagonal
-        bool secondDiagonalWon = true;
-
-        for (int index = 0; index < gridSize; index++)
-        {
-            if (grid[index, gridSize - 1 - index] != aiSymbol)
-            {
-                secondDiagonalWon = false;
-                break;
-            }
-        }
-
-        if (secondDiagonalWon)
-        {
-            aiWon = true;
-        }
-
-        return aiWon;
+        return false;
     }
 }

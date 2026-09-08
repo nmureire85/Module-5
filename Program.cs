@@ -67,7 +67,7 @@ class Program
             UIMethods.DisplayGrid(grid);
             UIMethods.ApplyLineSeperator();
 
-            var aiWon = GameActions.CheckAIPlayerWon(grid,  '0');
+            var aiWon = GameActions.CheckAiPlayerWon(grid,  '0');
             if (aiWon)
             {
                 UIMethods.PrintAIPlayerWins();
