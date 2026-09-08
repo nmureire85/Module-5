@@ -14,11 +14,8 @@ class Program
         Random random = new Random();   
         while (!gameOver)
         {
-            // Ask Player to input symbol at required position
             int playerRow = UIMethods.GetPlayerRowInput(5);
             int playerColumn = UIMethods.GetPlayerColumnInput(5);
-            // Check if position is empty
-
             if (grid[playerRow, playerColumn] == ' ')
             {
                 grid[playerRow, playerColumn] = 'X';
@@ -48,8 +45,6 @@ class Program
                 gameOver = true;
                 continue;
             }
-
-            // AI turn
             int aiRow;
             int aiColumn;
 
